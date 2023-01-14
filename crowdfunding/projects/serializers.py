@@ -27,6 +27,7 @@ class PledgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pledge
         fields = ['id', 'amount', 'comment', 'anonymous', 'project', 'supporter']
+        
 
 
 # ModelSerializer interprets
