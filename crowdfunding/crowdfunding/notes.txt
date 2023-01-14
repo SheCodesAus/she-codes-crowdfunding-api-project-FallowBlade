@@ -1,0 +1,5 @@
+
+
+This directory is the "project" directory.
+
+It has settings, urls.

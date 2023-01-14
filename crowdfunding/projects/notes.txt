@@ -1,0 +1,7 @@
+
+
+This is the "App" directory
+
+
+includes:
+-models, views, etc.
