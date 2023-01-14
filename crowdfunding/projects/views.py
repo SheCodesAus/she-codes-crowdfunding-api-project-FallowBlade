@@ -2,10 +2,10 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
-from rest_framework import status
+from rest_framework import status, generics
 
-from .models import Project
-from .serializers import ProjectSerializer
+from .models import Project, Pledge
+from .serializers import ProjectSerializer, PledgeSerializer
 
 # the "." means "from" so from the models file, import Project.
 # Get = get something
@@ -47,7 +47,12 @@ class ProjectDetail(APIView):
         serializer = ProjectSerializer(project)
         return Response(serializer.data)
     
+class PledgeList(generics.ListCreateAPIView):
+    queryset = Pledge.objects.all()
+    serializer_class = PledgeSerializer
 
+
+    
 # pk=pk means the primary key is equal to the value given.  
 # we will re-use the def get_object code accross many places to save us doing it again.
 
