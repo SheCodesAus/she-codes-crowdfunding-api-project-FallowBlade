@@ -9,12 +9,16 @@ from .models import Project, Pledge
 # Each field in the model generally corresponds to a column in the database. Each field of the model has a specific definition in the sense of the data it stores or the type of field it is. It can be a CharField or IntegerField, a ManytoManyField or a OneToManyField or just be a ForeignKey. We can also define the minimal validation requirements, used in Django’s admin and in automatically-generated forms. It is crucial to remember that these fields are important as they will go on to define our database.
 # when you execute the Python command to run migrations, Django performs a system check and creates the necessary tables in the database — Elegant and Neat. (Django also adds a primary key to the it but this can be overridden.)
 
+
+#### PLEDGE SERIALIZER ####
+#   ##This is the serializer for parsing model info about pledges from users & the required fields ####
+#NOTE I'm unsure how this is linked to an individual Project - ask later.
 class PledgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pledge
         fields = ['id', 'amount', 'comment', 'anonymous', 'project', 'supporter']
+        read_only_fields = ['id', 'supporter']
         
-
 
 # ModelSerializer interprets
 # to add ALL your fields, you could have written fields = '__all__' which would import ALL your fields
@@ -27,9 +31,9 @@ class ProjectSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=None)
     goal = serializers.IntegerField()
     image = serializers.URLField()
-    is_active = serializers.BooleanField()
+    is_open = serializers.BooleanField()
     date_created = serializers.DateTimeField()
-    owner = serializers.CharField(max_length=200)
+    owner = serializers.ReadOnlyField(source='owner_id')
 
     def create(self, validated_data):
         return Project.objects.create(**validated_data)
@@ -37,5 +41,6 @@ class ProjectSerializer(serializers.Serializer):
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
 
+ 
 # using **validated_data is a dictionary. so we are asking the serializer to create a dictionary, the asterisk is saying take everything that is here and return it as pairs. so it will be like, description = the thing, key = the value. 
 

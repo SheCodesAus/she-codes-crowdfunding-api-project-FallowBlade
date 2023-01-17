@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField()),
                 ('goal', models.IntegerField()),
                 ('image', models.URLField()),
-                ('is_active', models.BooleanField()),
+                ('is_open', models.BooleanField()),
                 ('date_created', models.DateTimeField(auto_now_add=True)),
                 ('owner', models.CharField(max_length=200)),
             ],
