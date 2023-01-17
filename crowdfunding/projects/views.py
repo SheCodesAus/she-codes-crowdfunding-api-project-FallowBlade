@@ -5,7 +5,7 @@ from django.http import Http404
 from rest_framework import status, generics
 
 from .models import Project, Pledge
-from .serializers import ProjectSerializer, PledgeSerializer
+from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer
 
 # the "." means "from" so from the models file, import Project.
 # Get = get something
@@ -14,6 +14,11 @@ from .serializers import ProjectSerializer, PledgeSerializer
 # serializers need to be told to do many
 # return Response(serializer.data) = we are getting te data from the serializer
 # self = defining it as a class
+# # Views, in the most simplest terms, is just something that will be used to interact with the backend and helps structure your code.
+#
+
+# With the below class, you will be repeating this for different views. The only thing you are really changing is the avatar(generic) naming convention. So in the below class ProjectList(APIView), the ONLY convention you are changing is the word "Project", "projects". For instance, you would swap this to be "Pledge" for others.
+
 
 
 class ProjectList(APIView):
@@ -44,7 +49,7 @@ class ProjectDetail(APIView):
     
     def get(self, request, pk):
         project = self.get_object(pk)
-        serializer = ProjectSerializer(project)
+        serializer = ProjectDetailSerializer(project)
         return Response(serializer.data)
     
 class PledgeList(generics.ListCreateAPIView):
