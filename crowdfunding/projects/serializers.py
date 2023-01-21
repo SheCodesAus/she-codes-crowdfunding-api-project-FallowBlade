@@ -2,6 +2,8 @@ from rest_framework import serializers
 
 from .models import Project, Pledge
 
+# from users.serializers import CustomUserSerializer
+
 # A serializer is an import/export of data
 # taking data from a raw form and converting it into a computer readable form and then doing the reverse too.
 # converting from computer native to something else (like JSON)
@@ -34,6 +36,7 @@ class ProjectSerializer(serializers.Serializer):
     is_open = serializers.BooleanField()
     date_created = serializers.DateTimeField()
     owner = serializers.ReadOnlyField(source='owner_id')
+    total = serializers.ReadOnlyField()
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title) 
@@ -51,6 +54,7 @@ class ProjectSerializer(serializers.Serializer):
 
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
+    # liked_by= CustomUserSerializer(many=True, read_only=True)
 
  
 # using **validated_data is a dictionary. so we are asking the serializer to create a dictionary, the asterisk is saying take everything that is here and return it as pairs. so it will be like, description = the thing, key = the value. 

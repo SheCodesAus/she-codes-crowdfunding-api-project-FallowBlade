@@ -1,8 +1,11 @@
 from django.db import models
+
+from django.db.models import Sum, Avg, Count, Min
+
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-# this is telling django to get the users model form the settings. This is just defining an alias.
+# this is telling django to get the users model from the settings. This is just defining an alias.
 
 #in the class Project model, because we haven't said anything has to be true, the default is automatically true.
 #auto_now_add = means that when you create a project, it will always add the current date and time.
@@ -20,7 +23,21 @@ class Project(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, 
         related_name='owner_projects')
+
+
+    liked_by = models.ManyToManyField(
+        User,
+        related_name='liked_projects'
+    )
+
+    @property
+    def total(self):
+        return self.pledges.aggregate(sum=models.Sum('amount'))['sum']
+
+# properties are a way of returning a value as if it was a database field
+
 # related_name is how the relationship works backwards. SO from Project the owner is project.owner (which is a user), so project1.owner will be a user. this is a foreign key to the user. from customer user back is the related name, so customuser.projects is relating back.
+
 
 
 class Pledge(models.Model):
@@ -34,5 +51,4 @@ class Pledge(models.Model):
     related_name='supporter_pledges')
 
 # on_delete models.CASCADE deletes everything related to that individual pledge, OR individual project.
-
 
