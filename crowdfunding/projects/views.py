@@ -12,7 +12,6 @@ from .permissions import IsOwnerReadOnly
 # the "." means "from" so from the models file, import Project.
 # Get = get something
 # Post = create
-# D.
 # serializers need to be told to do many
 # return Response(serializer.data) = we are getting te data from the serializer
 # self = defining it as a class
@@ -72,6 +71,9 @@ class ProjectDetail(APIView):
         )
         if serializer.is_valid():
             serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+    
     
 class PledgeList(generics.ListCreateAPIView):
     queryset = Pledge.objects.all()
@@ -79,10 +81,6 @@ class PledgeList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(supporter=self.request.user)
-
-
-
-
     
 # pk=pk means the primary key is equal to the value given.  
 # we will re-use the def get_object code accross many places to save us doing it again.
