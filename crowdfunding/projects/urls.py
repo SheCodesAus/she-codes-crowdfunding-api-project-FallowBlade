@@ -13,5 +13,6 @@ urlpatterns = [
 
 urlpatterns = format_suffix_patterns(urlpatterns)
 
-# format suffix patterns takes all your urls and helps you to tell it to become something else, like JSON.
+
+# format suffix patterns takes all your urls and helps you to tell them to become something else, like JSON.
 
