@@ -32,3 +32,7 @@ class CustomUserDetail(APIView):
         user = self.get_object(pk)
         serializer = CustomUserSerializer
         return Response(serializer.data)
+
+# class CreateAccount(APIView):
+
+#     def get(self, request)

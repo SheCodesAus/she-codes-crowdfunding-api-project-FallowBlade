@@ -29,6 +29,7 @@ class ProjectList(APIView):
         projects = Project.objects.all()
         seriaizer = ProjectSerializer(projects, many=True)
         return Response(seriaizer.data)
+    # GET the projects
 
     def post(self, request):
         serializer = ProjectSerializer(data=request.data)
@@ -36,7 +37,7 @@ class ProjectList(APIView):
             serializer.save(owner=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    #add new Porject, if not valid, don't save.
 
 # get the data from the request, serialize it, then
 # if the serializer is valid, save it.
@@ -74,6 +75,16 @@ class ProjectDetail(APIView):
             return Response(serializer.data)
         return Response(serializer.errors)
     
+    #  This DELETE Function Works - WOOP, do I need to add CASCADE is my question..?
+    def delete(self,request,pk):
+        project = self.get_object(pk)
+        serializer = ProjectDetailSerializer(project)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=204)
+    
+
     
 class PledgeList(generics.ListCreateAPIView):
     queryset = Pledge.objects.all()
@@ -81,6 +92,15 @@ class PledgeList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(supporter=self.request.user)
+
+# CHECK THIS - Unsure if this will delete entire pledge list, or single pledge. I want it to delete a single pledge, but it looks like it will delete the whole list.
+    def delete(self,request,pk):
+        pledge = self.get_object(pk)
+        serializer = PledgeList(pledge)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=204)
     
 # pk=pk means the primary key is equal to the value given.  
 # we will re-use the def get_object code accross many places to save us doing it again.
