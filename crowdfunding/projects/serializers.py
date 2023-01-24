@@ -21,6 +21,12 @@ class PledgeSerializer(serializers.ModelSerializer):
         fields = ['id', 'amount', 'comment', 'anonymous', 'project', 'supporter']
         read_only_fields = ['id', 'supporter']
         
+class PledgeDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Pledge
+        fields = []
+
 
 # ModelSerializer interprets
 # to add ALL your fields, you could have written fields = '__all__' which would import ALL your fields

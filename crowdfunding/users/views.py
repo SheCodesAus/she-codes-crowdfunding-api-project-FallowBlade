@@ -1,7 +1,7 @@
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 
 from .models import CustomUser
 from .serializers import CustomUserSerializer
@@ -16,10 +16,12 @@ class CustomUserList(APIView):
     def post(self, request):
         serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save
-            return Response
-        return Response(serializer.errors)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
+        
 class CustomUserDetail(APIView):
 
     def get_object(self, pk):
@@ -30,9 +32,31 @@ class CustomUserDetail(APIView):
     
     def get(self, request, pk):
         user = self.get_object(pk)
+        serializer = CustomUserSerializer(user)
+        return Response(serializer.data)
+    
+    # def create(self,request,pk):
+    #     user = self.create.__new__(pk)
+    #     serializer = CustomUserSerializer
+    #     return Response(serializer.data)
+
+    def put(self, request, pk):
+        user = self.get_object(pk)
+        data = request.data
+        serializer = CustomUserSerializer(
+            instance=user,
+            data=data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.update(self, validated_data=data)
+            return Response(serializer.data)
+        return Response(serializer.errors)
+
+
+class CreateUser(generics.CreateAPIView):
+    
+    def create(self,request,pk):
+        queryset = CustomUser.objects.all
         serializer = CustomUserSerializer
         return Response(serializer.data)
-
-# class CreateAccount(APIView):
-
-#     def get(self, request)
