@@ -85,12 +85,13 @@ class ProjectDetail(APIView):
         project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# ProjectSearch = attempt to make projects searchable..
+# ProjectSearch = attempt to make projects searchable by title
 class SearchAPIView(generics.ListCreateAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSearch
-    search_fields = ['title', 'description']
-    filter_backends = (filters.SearchFilter,)
+        queryset = Project.objects.all()
+        serializer_class = ProjectSearch
+        search_fields = ['title', 'description',]
+        filter_backends = (filters.SearchFilter,)
+
     
 class PledgeList(generics.ListCreateAPIView):
     queryset = Pledge.objects.all()
