@@ -21,7 +21,8 @@ class CustomUserList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-        
+
+
 class CustomUserDetail(APIView):
 
     def get_object(self, pk):
@@ -40,16 +41,16 @@ class CustomUserDetail(APIView):
     #     serializer = CustomUserSerializer
     #     return Response(serializer.data)
 
+# This updates/edits a users details (incl. password - I think!):
     def put(self, request, pk):
         user = self.get_object(pk)
         data = request.data
         serializer = CustomUserSerializer(
             instance=user,
             data=data,
-            partial=True
-        )
+            partial=True)
         if serializer.is_valid():
-            serializer.update(self, validated_data=data)
+            serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
 

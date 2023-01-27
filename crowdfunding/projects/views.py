@@ -3,11 +3,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
 from rest_framework import status, generics, permissions
+from rest_framework import filters
 
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 from .models import Project, Pledge
-from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer
+from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, ProjectSearch
 
 from .permissions import IsOwnerReadOnly
 
@@ -63,7 +64,8 @@ class ProjectDetail(APIView):
         project = self.get_object(pk)
         serializer = ProjectDetailSerializer(project)
         return Response(serializer.data)
-    
+
+# Update a project
     def put(self, request, pk):
         project = self.get_object(pk)
         data = request.data
@@ -74,15 +76,21 @@ class ProjectDetail(APIView):
         )
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     #  This DELETE Function Works - WOOP, do I need to add CASCADE is my question..?
     def delete(self,request,pk):
         project = self.get_object(pk)
         project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+# ProjectSearch = attempt to make projects searchable..
+class SearchAPIView(generics.ListCreateAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSearch
+    search_fields = ['title', 'description']
+    filter_backends = (filters.SearchFilter,)
     
 class PledgeList(generics.ListCreateAPIView):
     queryset = Pledge.objects.all()
