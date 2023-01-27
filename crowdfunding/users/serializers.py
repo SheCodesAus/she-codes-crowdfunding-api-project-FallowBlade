@@ -6,7 +6,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
     # username = serializers.CharField(max_length=150)
     # email = serializers.EmailField()
     # password = serializers.CharField(max_length=150)
-
     class Meta:
         model = CustomUser
         fields = ['id', 'email', 'username', 'password']
