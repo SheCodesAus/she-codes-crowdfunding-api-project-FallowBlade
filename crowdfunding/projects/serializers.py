@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from .models import Project, Pledge
 
-# from users.serializers import CustomUserSerializer
+from users.serializers import CustomUserSerializer
 
 # A serializer is an import/export of data
 # taking data from a raw form and converting it into a computer readable form and then doing the reverse too.
@@ -26,7 +26,6 @@ class PledgeDetailSerializer(serializers.ModelSerializer):
         model = Pledge
         fields = []
 
-
 # ModelSerializer interprets
 # to add ALL your fields, you could have written fields = '__all__' which would import ALL your fields
 
@@ -42,6 +41,7 @@ class ProjectSerializer(serializers.Serializer):
     date_created = serializers.DateTimeField()
     owner = serializers.ReadOnlyField(source='owner_id')
     total = serializers.ReadOnlyField()
+    liked_by = serializers.ReadOnlyField()
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title) 
@@ -59,6 +59,10 @@ class ProjectSerializer(serializers.Serializer):
 
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
+    tags = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
+    update_tags = serializers.ListField(
+        child=serializers.CharField(max_length=30), write_only=True)
+
     # liked_by= CustomUserSerializer(many=True, read_only=True)
 
 class ProjectSearch(serializers.ModelSerializer):

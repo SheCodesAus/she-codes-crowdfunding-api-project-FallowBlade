@@ -23,23 +23,15 @@ class Project(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, 
         related_name='owner_projects')
-
-    
-    liked_by = models.ManyToManyField(
-        User,
-        related_name='liked_projects'
-    )
-
     @property
     def total(self):
         return self.pledges.aggregate(sum=models.Sum('amount'))['sum']
 
+    # liked_by = models.ManyToManyField(
+    #     User, related_name='liked_projects')
 # properties are a way of returning a value as if it was a database field
 
 # related_name is how the relationship works backwards. SO from Project the owner is project.owner (which is a user), so project1.owner will be a user. this is a foreign key to the user. from customer user back is the related name, so customuser.projects is relating back.
-
-
-
 class Pledge(models.Model):
     amount = models.IntegerField(default=1)
     comment = models.CharField(max_length=200)

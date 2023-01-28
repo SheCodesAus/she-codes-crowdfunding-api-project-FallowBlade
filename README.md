@@ -86,7 +86,7 @@
 ​
 Apply this API to search for a word linked to a project title or description. Functions as a GET.
 ​
-- [ ] {Title Feature 2}
+- [ ] Project Tags Feature
 ​
 {{ description of feature 2 }}
 ​
