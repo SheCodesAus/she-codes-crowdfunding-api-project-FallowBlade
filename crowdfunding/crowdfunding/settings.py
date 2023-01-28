@@ -24,7 +24,10 @@ SECRET_KEY = os.environ.get(
     'DJANGO_SECRET_KEY','django-insecure-6f5fiv53l$d=%d_0_8&znvd!6&d3rfy-qowzswx^u)i-p_dsm6')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False') !='False'
+
+DEBUG = True
+ALLOWED_HOSTS = ["127.0.0.1","localhost"]
+#DEBUG = os.environ.get('DJANGO_DEBUG', 'False') !='False'
 
 ALLOWED_HOSTS = ['wild-glade-7116.fly.dev']
 CORS_ALLOW_ALL_ORIGINS = True
@@ -129,6 +132,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

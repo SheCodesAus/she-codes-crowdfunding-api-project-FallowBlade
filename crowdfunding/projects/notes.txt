@@ -5,3 +5,23 @@ This is the "App" directory
 
 includes:
 -models, views, etc.
+
+
+pledge.project 
+
+project.pledges.all (give you all the pledges = a list of pledges)
+for pledge in p.pledges
+    print (pledge.amount)
+
+p.pledges.create
+
+
+TASK: To add (get) all the pledges for one project to see if goal has been reached:
+
+import from django.db.models import sum avg, count, min, sum
+
+p= Project.object.annotate(total=Sum('pledges__amount')).first
+
+
+THIS PART WORKS!!
+p.pledges.aggregate(sum=Sum('amount'))['sum']

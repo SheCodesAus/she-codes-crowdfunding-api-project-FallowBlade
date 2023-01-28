@@ -16,6 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
+from django.http import HttpResponseNotFound
+
+def Custom404(request, exception):
+    return HttpResponseNotFound("Error 404: Sorry we couldn't complete your request")
+handler404 = Custom404
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +29,5 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('', include('projects.urls')),
     
-
 ]
 
