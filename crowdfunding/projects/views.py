@@ -100,15 +100,14 @@ class PledgeList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(supporter=self.request.user)
 
-# CHECK THIS - Unsure if this will delete entire pledge list, or single pledge. I want it to delete a single pledge, but it looks like it will delete the whole list.
-
-# Ben confirms - I need to add this to a PledgeDetailView try looking at RUD 
-    def delete(self,request,pk):
-        pledge = self.get_object(pk)
-        pledge.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
+    # def get_queryset(self):
+    #     """
+    #     This view should return a list of all the pledges
+    #     for the currently authenticated user.
+    #     """
+    #     user = self.request.user
+    #     return Pledge.objects.filter(supporter=user)
+    
 # class PledgeDetailView(generics.RetrieveUpdateAPIView)
 
 class PledgeDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -116,7 +115,6 @@ class PledgeDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, IsSupportReadOnly
     ]
-
     queryset = Pledge.objects.all()
     serializer_class = PledgeSerializer
 
