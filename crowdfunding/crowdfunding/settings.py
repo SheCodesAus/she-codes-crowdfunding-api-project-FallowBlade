@@ -25,8 +25,7 @@ SECRET_KEY = os.environ.get(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
-#DEBUG = os.environ.get('DJANGO_DEBUG', 'False') !='False'
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') !='False'
 
 ALLOWED_HOSTS = ['wild-glade-7116.fly.dev', 'localhost', '127.0.0.1', ]
 CORS_ALLOW_ALL_ORIGINS = True

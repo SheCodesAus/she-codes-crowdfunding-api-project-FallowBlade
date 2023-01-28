@@ -19,7 +19,6 @@ from .permissions import IsOwnerReadOnly, IsSupportReadOnly
 # return Response(serializer.data) = we are getting te data from the serializer
 # self = defining it as a class
 # # Views, in the most simplest terms, is just something that will be used to interact with the backend and helps structure your code.
-#
 
 # With the below class, you will be repeating this for different views. The only thing you are really changing is the avatar(generic) naming convention. So in the below class ProjectList(APIView), the ONLY convention you are changing is the word "Project", "projects". For instance, you would swap this to be "Pledge" for others.
 
@@ -107,7 +106,7 @@ class PledgeList(generics.ListCreateAPIView):
     #     """
     #     user = self.request.user
     #     return Pledge.objects.filter(supporter=user)
-    
+
 # class PledgeDetailView(generics.RetrieveUpdateAPIView)
 
 class PledgeDetailView(generics.RetrieveUpdateDestroyAPIView):
