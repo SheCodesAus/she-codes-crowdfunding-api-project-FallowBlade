@@ -10,7 +10,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from .models import Project, Pledge
 from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, ProjectSearch
 
-from .permissions import IsOwnerReadOnly
+from .permissions import IsOwnerReadOnly, IsSupportReadOnly
 
 # the "." means "from" so from the models file, import Project.
 # Get = get something
@@ -108,42 +108,52 @@ class PledgeList(generics.ListCreateAPIView):
         pledge.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class PledgeDetailView(APIView):
 
-  def get_object(self, pk):
-        try:
-            pledge = Pledge.objects.get(pk=pk)
-            self.check_object_permissions(self.request, pledge)
-            return pledge
-        except Pledge.DoesNotExist:
-            raise Http404
+# class PledgeDetailView(generics.RetrieveUpdateAPIView)
+
+class PledgeDetailView(generics.RetrieveUpdateAPIView):
+
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly, IsSupportReadOnly
+    ]
+
+    queryset = Pledge.objects.all()
+    serliazer_class = PledgeSerializer
+
+#   def get_object(self, pk):
+#         try:
+#             pledge = Pledge.objects.get(pk=pk)
+#             self.check_object_permissions(self.request, pledge)
+#             return pledge
+#         except Pledge.DoesNotExist:
+#             raise Http404
     
-def get(self, request, pk):
-        pledge = self.get_object(pk)
-        serializer = PledgeDetailView(pledge)
-        return Response(serializer.data)
+# def get(self, request, pk):
+#         pledge = self.get_object(pk)
+#         serializer = PledgeDetailView(pledge)
+#         return Response(serializer.data)
     
-def put(self, request, pk):
-        pledge = self.get_object(pk)
-        data = request.data
-        serializer = PledgeSerializer(
-            instance=pledge,
-            data=data,
-            partial=True
-        )
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
+# def put(self, request, pk):
+#         pledge = self.get_object(pk)
+#         data = request.data
+#         serializer = PledgeSerializer(
+#             instance=pledge,
+#             data=data,
+#             partial=True
+#         )
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors)
     
-    #  This DELETE Function Works - WOOP, do I need to add CASCADE is my question..?
-def delete(self,request,pk):
-        pledge = self.get_object(pk)
-        serializer = PledgeDetailView(pledge)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=204)
+#     #  This DELETE Function Works - WOOP, do I need to add CASCADE is my question..?
+# def delete(self,request,pk):
+#         pledge = self.get_object(pk)
+#         serializer = PledgeDetailView(pledge)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=204)
     
 # pk=pk means the primary key is equal to the value given.  
 # we will re-use the def get_object code accross many places to save us doing it again.

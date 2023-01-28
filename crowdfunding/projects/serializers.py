@@ -22,7 +22,6 @@ class PledgeSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'supporter']
         
 class PledgeDetailSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Pledge
         fields = []
@@ -67,6 +66,9 @@ class ProjectSearch(serializers.ModelSerializer):
         model = Project
         fields = '__all__'
 
-
+class PledgeSearch(serializers.ModelSerializer):
+    class Meta:
+        model = Pledge
+        fields = '__all__'
 # using **validated_data is a dictionary. so we are asking the serializer to create a dictionary, the asterisk is saying take everything that is here and return it as pairs. so it will be like, description = the thing, key = the value. 
 
