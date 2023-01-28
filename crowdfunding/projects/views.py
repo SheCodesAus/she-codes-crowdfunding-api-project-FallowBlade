@@ -111,14 +111,14 @@ class PledgeList(generics.ListCreateAPIView):
 
 # class PledgeDetailView(generics.RetrieveUpdateAPIView)
 
-class PledgeDetailView(generics.RetrieveUpdateAPIView):
+class PledgeDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, IsSupportReadOnly
     ]
 
     queryset = Pledge.objects.all()
-    serliazer_class = PledgeSerializer
+    serializer_class = PledgeSerializer
 
 #   def get_object(self, pk):
 #         try:
