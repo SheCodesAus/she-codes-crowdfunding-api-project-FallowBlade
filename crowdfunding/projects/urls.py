@@ -10,7 +10,9 @@ urlpatterns = [
     path('projects/<int:pk>/', views.ProjectDetail.as_view(), name="project-detail"),
     path('pledges/', views.PledgeList.as_view(), name="pledge-list"),
     path('pledges/<int:pk>/', views.PledgeDetailView.as_view(), name="pledge-view"),
-    path('search/', views.SearchAPIView.as_view(), name="project-search")
+    path('search/', views.SearchAPIView.as_view(), name="project-search"),
+    path('categories/', views.CategoryList.as_view(), name='category-list'),
+    path('categories/<int:pk>', views.CategoryDetail.as_view(), name='category'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

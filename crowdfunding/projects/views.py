@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from unicodedata import category
 from rest_framework.response import Response
 from django.http import Http404
 from rest_framework import status, generics, permissions
@@ -8,20 +9,16 @@ from rest_framework import filters
 
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 
-from .models import Project, Pledge
-from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, ProjectSearch
+from .models import Project, Pledge, Category
+from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, ProjectSearch, CategoryDetailSerializer, Category, CategorySerializer
 
 from .permissions import IsOwnerReadOnly, IsSupportReadOnly
 
 
 # the "." means "from" so from the models file, import Project.
-# Get = get something
-# Post = create
-# serializers need to be told to do many
+
 # return Response(serializer.data) = we are getting te data from the serializer
 # self = defining it as a class
-# # Views, in the most simplest terms, is just something that will be used to interact with the backend and helps structure your code.
-#
 
 # With the below class, you will be repeating this for different views. The only thing you are really changing is the avatar(generic) naming convention. So in the below class ProjectList(APIView), the ONLY convention you are changing is the word "Project", "projects". For instance, you would swap this to be "Pledge" for others.
 
@@ -124,12 +121,14 @@ class ProjectDetail(APIView):
         project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# ProjectSearch = attempt to make projects searchable by title
+
 class SearchAPIView(generics.ListCreateAPIView):
         queryset = Project.objects.all()
         serializer_class = ProjectSearch
         search_fields = ['title', 'description',]
         filter_backends = (filters.SearchFilter,)
+# This means set the query to capture all Project fields from the project, call the ProjectSearch serializer (with the rules in-built) and then query 'title' and 'project' fields for the requested string.
+    # Note that this is currently not able to be customisable to extent of "containts, doesnotcontain, rules etc."
 
 class PledgeList(generics.ListCreateAPIView):
     queryset = Pledge.objects.all()
@@ -137,25 +136,62 @@ class PledgeList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(supporter=self.request.user)
+# this means, create a pledge based on the pledgeserializer, and save this to the list as being created by the user)
  
-
-
-    # def get_queryset(self):
-    #     """
-    #     This view should return a list of all the pledges
-    #     for the currently authenticated user.
-    #     """
-    #     user = self.request.user
-    #     return Pledge.objects.filter(supporter=user)
-
+    def get_queryset(self):
+        user = self.request.user
+        return Pledge.objects.filter(supporter=user)
+# this means that ONLY pledges the created by the user appear in the list.
 
 class PledgeDetailView(generics.RetrieveUpdateDestroyAPIView):
-
+# allows only the pledge creator(owner) to update or destroy their pledge.
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, IsSupportReadOnly
     ]
     queryset = Pledge.objects.all()
     serializer_class = PledgeSerializer
+
+
+class CategoryList(generics.ListCreateAPIView):
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
+
+class CategoryDetail(APIView):
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly,
+    ]
+
+    def get_object(self, pk):
+        try:
+            category = Category.objects.get(pk=pk)
+            self.check_object_permissions(self.request,category)
+            return category
+            
+        except Category.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        category = self.get_object(pk)
+        serializer = CategoryDetailSerializer(category)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        category = self.get_object(pk)
+        data = request.data
+        serializer = CategoryDetailSerializer(
+            instance=category,
+            data=data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        category = self.get_object(pk)
+        category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 # pk=pk means the primary key is equal to the value given.  
 # we will re-use the def get_object code accross many places to save us doing it again.

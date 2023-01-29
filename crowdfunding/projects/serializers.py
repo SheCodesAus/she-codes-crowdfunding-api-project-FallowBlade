@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Project, Pledge
+from .models import Project, Pledge, Category
 
 from users.serializers import CustomUserSerializer
 
@@ -71,10 +71,43 @@ class ProjectSerializer(serializers.Serializer):
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
 
-    tags = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
-    update_tags = serializers.ListField(
-        child=serializers.CharField(max_length=30), write_only=True)
-    
+class ProjectSearch(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+class PledgeSearch(serializers.ModelSerializer):
+    class Meta:
+        model = Pledge
+        fields = '__all__'
+
+# using **validated_data is a dictionary. so we are asking the serializer to create a dictionary, the asterisk is saying take everything that is here and return it as pairs. so it will be like, description = the thing, key = the value. 
+
+# This is to create category
+class CategorySerializer(serializers.Serializer):
+    id = serializers.ReadOnlyField()
+    name = serializers.CharField(max_length=200)
+    slug = serializers.SlugField()
+
+    def create(self, validated_data):
+        return Category.objects.create(**validated_data)
+
+class CategoryDetailSerializer(CategorySerializer):
+        def update(self, instance, validated_data):
+            instance.name = validated_data.get('name', instance.name)
+            instance.slug = validated_data.get('slug', instance.slug)
+            instance.save()
+            return instance
+
+
+# Tried to do tags nested in ProjectSerializer, but decided on sep. category instead as easier..
+
+
+    # tags = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
+    # update_tags = serializers.ListField(
+    #     child=serializers.CharField(max_length=30), write_only=True)
+
+
     # def create(self, validated_data):
     #     tag_names = validated_data.pop('update_tags')
     #     instance = super().create(validated_data)
@@ -98,15 +131,3 @@ class ProjectDetailSerializer(ProjectSerializer):
     #     return instance
 
     # liked_by= CustomUserSerializer(many=True, read_only=True)
-
-class ProjectSearch(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        fields = '__all__'
-
-class PledgeSearch(serializers.ModelSerializer):
-    class Meta:
-        model = Pledge
-        fields = '__all__'
-# using **validated_data is a dictionary. so we are asking the serializer to create a dictionary, the asterisk is saying take everything that is here and return it as pairs. so it will be like, description = the thing, key = the value. 
-
