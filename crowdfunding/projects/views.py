@@ -5,12 +5,13 @@ from django.http import Http404
 from rest_framework import status, generics, permissions
 from rest_framework import filters
 
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 
 from .models import Project, Pledge
 from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, ProjectSearch
 
 from .permissions import IsOwnerReadOnly, IsSupportReadOnly
+
 
 # the "." means "from" so from the models file, import Project.
 # Get = get something
@@ -19,18 +20,20 @@ from .permissions import IsOwnerReadOnly, IsSupportReadOnly
 # return Response(serializer.data) = we are getting te data from the serializer
 # self = defining it as a class
 # # Views, in the most simplest terms, is just something that will be used to interact with the backend and helps structure your code.
+#
 
 # With the below class, you will be repeating this for different views. The only thing you are really changing is the avatar(generic) naming convention. So in the below class ProjectList(APIView), the ONLY convention you are changing is the word "Project", "projects". For instance, you would swap this to be "Pledge" for others.
 
 
 
 class ProjectList(APIView):
+    
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         projects = Project.objects.all()
-        seriaizer = ProjectSerializer(projects, many=True)
-        return Response(seriaizer.data)
+        serializer = ProjectSerializer(projects, many=True)
+        return Response(serializer.data)
     # GET the projects
 
     def post(self, request):
@@ -106,7 +109,6 @@ class PledgeList(generics.ListCreateAPIView):
     #     """
     #     user = self.request.user
     #     return Pledge.objects.filter(supporter=user)
-
 # class PledgeDetailView(generics.RetrieveUpdateAPIView)
 
 class PledgeDetailView(generics.RetrieveUpdateDestroyAPIView):

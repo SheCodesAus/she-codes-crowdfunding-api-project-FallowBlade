@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from .models import Project, Pledge
 
-from users.serializers import CustomUserSerializer
+# from users.serializers import CustomUserSerializer
 
 # A serializer is an import/export of data
 # taking data from a raw form and converting it into a computer readable form and then doing the reverse too.
@@ -41,7 +41,7 @@ class ProjectSerializer(serializers.Serializer):
     date_created = serializers.DateTimeField()
     owner = serializers.ReadOnlyField(source='owner_id')
     total = serializers.ReadOnlyField()
-    liked_by = serializers.ReadOnlyField()
+    # liked_by = serializers.ReadOnlyField()
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title) 
@@ -59,9 +59,31 @@ class ProjectSerializer(serializers.Serializer):
 
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
-    tags = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
-    update_tags = serializers.ListField(
-        child=serializers.CharField(max_length=30), write_only=True)
+    # tags = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
+    # update_tags = serializers.ListField(
+    #     child=serializers.CharField(max_length=30), write_only=True)
+    
+    # def create(self, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().create(validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance
+
+    # def update(self, instance, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().update(instance, validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance
 
     # liked_by= CustomUserSerializer(many=True, read_only=True)
 
