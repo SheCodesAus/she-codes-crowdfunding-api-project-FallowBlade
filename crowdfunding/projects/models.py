@@ -27,30 +27,23 @@ class Project(models.Model):
     @property
     def total(self):
         return self.pledges.aggregate(sum=models.Sum('amount'))['sum']
+# properties are a way of returning a value as if it was a database field
 
     category = models.ForeignKey(
         'Category',
         null=True, blank=True,
         on_delete=models.CASCADE,
         related_name='project_id')
-    
-  # liked_by = models.ManyToManyField(
-    #     User, 
-    #     related_name='liked_projects'
-    # )
-    
-    # liked_by = models.ManyToManyField(
-    #     User, related_name='liked_projects')
+#  category option added to a project.
 
+# related_name is how the relationship works backwards. So from Project the owner is project.owner (which is a user), so project1.owner will be a user. this is a foreign key to the user. from customer user back is the related name, so customuser.projects is relating back.
 
-# Used to Create Project Categories
 class Category(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
   
-# properties are a way of returning a value as if it was a database field
+# Used to capture Categories
 
-# related_name is how the relationship works backwards. SO from Project the owner is project.owner (which is a user), so project1.owner will be a user. this is a foreign key to the user. from customer user back is the related name, so customuser.projects is relating back.
 class Pledge(models.Model):
     amount = models.IntegerField(default=1)
     comment = models.CharField(max_length=200)

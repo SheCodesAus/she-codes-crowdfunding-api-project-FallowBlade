@@ -10,6 +10,8 @@ from .serializers import CustomUserSerializer, ChangePasswordSerializer
 
 
 class CustomUserList(APIView):
+
+    # This class is returning a list of users and an ability to post a new user with the required serializer pieces.
     
     def get(self, request):
         users = CustomUser.objects.all()
@@ -44,7 +46,7 @@ class CustomUserDetail(APIView):
     #     serializer = CustomUserSerializer
     #     return Response(serializer.data)
 
-# This updates/edits a users details (incl. password - I think!):
+# This updates/edits a users details:
     def put(self, request, pk):
         user = self.get_object(pk)
         data = request.data
@@ -71,33 +73,4 @@ class ChangePasswordView(generics.UpdateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ChangePasswordSerializer
 
-# class ChangePasswordView(generics.UpdateAPIView):
-#         model = CustomUser
-#         permission_classess = (IsAuthenticated)
-
-#         def get_object(self, queryset=None):
-#             obj = self.request.user
-#             return obj
-        
-#         def update(self,request, *args, **kwargs):
-#             self.object = self.get_serializer(data=request.data)
-#             serializer = ChangePasswordSerializer
-
-#             if serializer.is_valid():
-#                 # check old password
-#                 if not self.object.check_password(serializer.data.get("old_password")):
-#                          return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
-#                 # set_password also hashes the password that the user will get
-#                 self.object.set_password(serializer.data.get("new_password"))
-#                 self.object.save()
-#                 response = {
-#                     'status': 'success',
-#                     'code': status.HTTP_200_OK,
-#                     'message': 'Password updated successfully',
-#                     'data': []
-#                 }
-
-#                 return Response(response)
-
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

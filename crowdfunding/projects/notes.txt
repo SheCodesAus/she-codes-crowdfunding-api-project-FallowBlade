@@ -23,5 +23,54 @@ import from django.db.models import sum avg, count, min, sum
 p= Project.object.annotate(total=Sum('pledges__amount')).first
 
 
-THIS PART WORKS!!
-p.pledges.aggregate(sum=Sum('amount'))['sum']
+    # tags = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
+    # update_tags = serializers.ListField(
+    #     child=serializers.CharField(max_length=30), write_only=True)
+
+
+    # def create(self, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().create(validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance
+
+    # def update(self, instance, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().update(instance, validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance
+
+
+    Serializer tag attempt:
+    
+    # def create(self, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().create(validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance
+
+    # def update(self, instance, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().update(instance, validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance

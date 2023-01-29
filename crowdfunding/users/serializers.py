@@ -4,6 +4,9 @@ from django.contrib.auth.password_validation import validate_password
 from .models import CustomUser
 
 class CustomUserSerializer(serializers.ModelSerializer):
+
+    # This class is saying, get the customUser from the model and pull the specified fields, I THINK the extra kwargs is saying, if the password is longer than base argument, then OK to continue adding.
+
     class Meta:
         model = CustomUser
         fields = ['id', 'email', 'username', 'password']
@@ -27,9 +30,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return instance
 
 
-# Review later??
-# ?
 class ChangePasswordSerializer(serializers.Serializer):
+
+    # This class is saying, take the old password field, validate it is correct; then, create a new password field, validate against password requirements, then repeat the password for authentication, complete error handling, then update and save the new password. 
 
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password_repeat = serializers.CharField(write_only=True, required=True)
@@ -53,23 +56,5 @@ class ChangePasswordSerializer(serializers.Serializer):
         instance.save()
 
         return instance
-
-# Review later???
-
-
-
-# class ChangePasswordSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CustomUser
-#         old_password = serializers.CharField(required=True)
-#         new_password = serializers.CharField(required=True)
-
-
-    # id = serializers.ReadOnlyField()
-    # username = serializers.CharField(max_length=150)
-    # email = serializers.EmailField()
-    # password = serializers.CharField(max_length=150)
-
-
 
 
