@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
 from rest_framework import status, generics, permissions
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
@@ -25,16 +26,33 @@ from .permissions import IsOwnerReadOnly, IsSupportReadOnly
 # With the below class, you will be repeating this for different views. The only thing you are really changing is the avatar(generic) naming convention. So in the below class ProjectList(APIView), the ONLY convention you are changing is the word "Project", "projects". For instance, you would swap this to be "Pledge" for others.
 
 
-
-class ProjectList(APIView):
+# class ProjectList(APIView):
     
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def get(self, request):
-        projects = Project.objects.all()
-        serializer = ProjectSerializer(projects, many=True)
-        return Response(serializer.data)
-    # GET the projects
+#     def get(self, request):
+#         projects = Project.objects.all()
+#         serializer = ProjectSerializer(projects, many=True)
+#         return Response(serializer.data)
+#     # GET the projects
+
+#     def post(self, request):
+#         serializer = ProjectSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save(owner=request.user)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #add new Porject, if not valid, don't save.
+
+# get the data from the request, serialize it, then
+# if the serializer is valid, save it.
+
+
+class ProjectList(generics.ListCreateAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["owner", "is_open"]
 
     def post(self, request):
         serializer = ProjectSerializer(data=request.data)
@@ -42,12 +60,8 @@ class ProjectList(APIView):
             serializer.save(owner=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    #add new Porject, if not valid, don't save.
 
-# get the data from the request, serialize it, then
-# if the serializer is valid, save it.
-
-class ProjectDetail(APIView):
+class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, 

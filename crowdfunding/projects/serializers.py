@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from .models import Project, Pledge
 
-# from users.serializers import CustomUserSerializer
+from users.serializers import CustomUserSerializer
 
 # A serializer is an import/export of data
 # taking data from a raw form and converting it into a computer readable form and then doing the reverse too.
@@ -59,6 +59,7 @@ class ProjectSerializer(serializers.Serializer):
 
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
+
     # tags = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
     # update_tags = serializers.ListField(
     #     child=serializers.CharField(max_length=30), write_only=True)

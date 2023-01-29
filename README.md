@@ -82,13 +82,13 @@
 ​
 ## Additional features
 ​
-- [ ] ProjectSearchAPI
+- [X] SearchAPI
 ​
-Apply this API to search for a word linked to a project title or description. Functions as a GET.
+Apply this API & View to search for a project based on the project title or description. Functions as a GET.
 ​
-- [ ] Project Tags Feature
-​
-{{ description of feature 2 }}
+- [X] Filter by owner or is_open fields
+
+This feature sits within the ProjectList view. It allows us to filter projects based on whether or not a project is open or closed.
 ​
 - [ ] {Title Feature 3}
 ​
