@@ -42,7 +42,7 @@ class Category(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
   
-# Used to capture Categories
+
 
 class Pledge(models.Model):
     amount = models.IntegerField(default=1)

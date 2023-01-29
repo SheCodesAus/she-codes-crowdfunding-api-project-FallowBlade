@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') !='True'
 
-ALLOWED_HOSTS = ['wild-glade-7116.fly.dev', 'localhost', '127.0.0.1', ]
+ALLOWED_HOSTS = ['wild-glade-7116.fly.dev', 'localhost', '127.0.0.1', 'http://127.0.0.1:8000']
 CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = ['https://*.fly.dev']
 
@@ -143,6 +143,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 5
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 1
 }

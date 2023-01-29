@@ -84,17 +84,26 @@ Crowdfunding project for community-conscious individuals looking to rejuvinate u
 ​
 ## Additional features
 ​
-- [X] SearchAPI
+- [X] SearchAPI Feature
 ​
-Apply this API & View to search for a project based on the project title or description. Functions as a GET.
+Apply this API & View to search for a project based on the project title or description. Functions as a GET, which calls a query that you are setting the parameter for. For example, mine is set to "title" and "search" within all projects, so when you type your keyword/value, it will only search those fields for a corresponding word. Note I have not set a contains, onlycontains, etc. rule for this feature, so it has limitations in that it is broad-based search of strings.
 ​
 - [X] Filter by owner or is_open fields
 
 This feature sits within the ProjectList view. It allows us to filter projects based on whether or not a project is open or closed.
 ​
-- [ ] {Title Feature 3}
+- [X] Category Feature
 ​
-{{ description of feature 3 }}
+This feature creates project categories with a name, unique ID and slug(URL-friendly name convention for calling at later stage).
+
+- [X] Ben's Bonus Totals Feature
+​
+This feature creates an aggregate sum of all pledges against a project, and returns a total of those against an individual project.
+
+- [X] Pagination Feature 
+
+Not sure if this counts as a feature, but i've added a pagination rule where if the count of projects in project list view is >5, then a new page for viewing the next 5 projects is generated.
+​
 ​
 ### External libraries used
 ​
@@ -105,8 +114,8 @@ This feature sits within the ProjectList view. It allows us to filter projects b
 ​
 - [ ] A link to the deployed project. 
 - [ ] A screenshot of Insomnia, demonstrating a successful GET method for any endpoint.
-- [ ] A screenshot of Insomnia, demonstrating a successful POST method for any endpoint.
-- [ ] A screenshot of Insomnia, demonstrating a token being returned. see 
+- [X] A screenshot of Insomnia, demonstrating a successful POST method for any endpoint.
+- [X] A screenshot of Insomnia, demonstrating a token being returned. see 
 - [ ] Your refined API specification and Database Schema. - Link here: 
 ​
 ### Step by step instructions for how to register a new user and create a new project (i.e. endpoints and body data).

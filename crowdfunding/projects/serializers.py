@@ -19,7 +19,7 @@ from users.serializers import CustomUserSerializer
 #### PLEDGE SERIALIZER ####
          ##This is the serializer for parsing model info about pledges from users & the required fields ####
 class PledgeSerializer(serializers.ModelSerializer):
-   
+
     supporter = serializers.SerializerMethodField()
     class Meta:
         model = Pledge
@@ -37,10 +37,11 @@ class PledgeSerializer(serializers.ModelSerializer):
 
 #### PLEDGEDETAILSERIALIZER ####
         # This is pulling all the fields in the pledge id model as a list
-class PledgeDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Pledge
-        fields = []
+# class PledgeDetailSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Pledge
+#         fields = []
+
 
 #### PROJECTSERIALIZER ####
         ##This is the serializer for parsing model info about individual project & the required fields ####
@@ -54,6 +55,7 @@ class ProjectSerializer(serializers.Serializer):
     date_created = serializers.DateTimeField()
     owner = serializers.ReadOnlyField(source='owner_id')
     total = serializers.ReadOnlyField()
+    category = serializers.SlugRelatedField(slug_field='slug', queryset=Category.objects.all())
 
 
     def update(self, instance, validated_data):
@@ -81,15 +83,11 @@ class ProjectSearch(serializers.ModelSerializer):
         model = Project
         fields = '__all__'
     # This is a serializer to be used in serach views which is partsing all fields from the Project Model.
-class PledgeSearch(serializers.ModelSerializer):
-    class Meta:
-        model = Pledge
-        fields = '__all__'
-    # This is a serializer to be used in serach views which is partsing all fields from the Project Model.
 
 
 # This is to create category
 class CategorySerializer(serializers.Serializer):
+
     id = serializers.ReadOnlyField()
     name = serializers.CharField(max_length=200)
     slug = serializers.SlugField()

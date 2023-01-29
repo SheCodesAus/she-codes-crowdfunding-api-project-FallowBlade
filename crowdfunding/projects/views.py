@@ -3,14 +3,13 @@ from rest_framework.views import APIView
 from unicodedata import category
 from rest_framework.response import Response
 from django.http import Http404
-from rest_framework import status, generics, permissions
+from rest_framework import status, generics, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
 
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 
 from .models import Project, Pledge, Category
-from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, ProjectSearch, CategoryDetailSerializer, Category, CategorySerializer
+from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, ProjectSearch, CategoryDetailSerializer, CategorySerializer
 
 from .permissions import IsOwnerReadOnly, IsSupportReadOnly
 
@@ -19,8 +18,7 @@ from .permissions import IsOwnerReadOnly, IsSupportReadOnly
 
 # return Response(serializer.data) = we are getting te data from the serializer
 # self = defining it as a class
-
-# With the below class, you will be repeating this for different views. The only thing you are really changing is the avatar(generic) naming convention. So in the below class ProjectList(APIView), the ONLY convention you are changing is the word "Project", "projects". For instance, you would swap this to be "Pledge" for others.
+# So in the below class ProjectList(APIView), the ONLY convention you are changing is the word "Project", "projects". For instance, you would swap this to be "Pledge" for others.
 
 
 # class ProjectList(APIView):
@@ -92,28 +90,6 @@ class ProjectDetail(APIView):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-    # def create(self, validated_data):
-    #     tag_names = validated_data.pop('update_tags')
-    #     instance = super().create(validated_data)
-    #     user = self.context['request'].user
-    #     tags = []
-    #     for name in tag_names:
-    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
-    #         tags.append(tag)
-    #     instance.tags.set(tags)
-    #     return instance
-
-    # def update(self, instance, validated_data):
-    #     tag_names = validated_data.pop('update_tags')
-    #     instance = super().update(instance, validated_data)
-    #     user = self.context['request'].user
-    #     tags = []
-    #     for name in tag_names:
-    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
-    #         tags.append(tag)
-    #     instance.tags.set(tags)
-    #     return instance
     
     #  This DELETE Function Works - WOOP, do I need to add CASCADE is my question..?
     def delete(self,request,pk):
@@ -125,22 +101,24 @@ class ProjectDetail(APIView):
 class SearchAPIView(generics.ListCreateAPIView):
         queryset = Project.objects.all()
         serializer_class = ProjectSearch
-        search_fields = ['title', 'description',]
+        search_fields = ['title', 'description', 'owner__username']
         filter_backends = (filters.SearchFilter,)
-# This means set the query to capture all Project fields from the project, call the ProjectSearch serializer (with the rules in-built) and then query 'title' and 'project' fields for the requested string.
-    # Note that this is currently not able to be customisable to extent of "containts, doesnotcontain, rules etc."
+        # This means set the query to capture all Project fields from the project, call the ProjectSearch serializer (with the rules in-built) and then query 'title' and 'project' fields for the requested string.
+         # Note that this is currently not able to be customisable to extent of "containts, doesnotcontain, rules etc."
 
 class PledgeList(generics.ListCreateAPIView):
     queryset = Pledge.objects.all()
     serializer_class = PledgeSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["supporter"]
 
     def perform_create(self, serializer):
         serializer.save(supporter=self.request.user)
 # this means, create a pledge based on the pledgeserializer, and save this to the list as being created by the user)
  
-    def get_queryset(self):
-        user = self.request.user
-        return Pledge.objects.filter(supporter=user)
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return Pledge.objects.filter(supporter=user)
 # this means that ONLY pledges the created by the user appear in the list.
 
 class PledgeDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -155,6 +133,7 @@ class PledgeDetailView(generics.RetrieveUpdateDestroyAPIView):
 class CategoryList(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+# Get all category objects and create a list of these for the view.
 
 class CategoryDetail(APIView):
     permission_classes = [
@@ -185,7 +164,7 @@ class CategoryDetail(APIView):
         )
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_205_RESET_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
