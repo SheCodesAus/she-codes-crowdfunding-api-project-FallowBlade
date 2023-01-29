@@ -103,7 +103,7 @@ This feature sits within the ProjectList view. It allows us to filter projects b
 ​
 ## Part A Submission
 ​
-- [ ] A link to the deployed project.
+- [ ] A link to the deployed project. 
 - [ ] A screenshot of Insomnia, demonstrating a successful GET method for any endpoint.
 - [ ] A screenshot of Insomnia, demonstrating a successful POST method for any endpoint.
 - [ ] A screenshot of Insomnia, demonstrating a token being returned. see 
