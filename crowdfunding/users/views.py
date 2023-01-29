@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 from rest_framework.permissions import IsAuthenticated
 
 from .models import CustomUser
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer, ChangePasswordSerializer
 
 
 class CustomUserList(APIView):
@@ -65,11 +65,11 @@ class CreateUser(generics.CreateAPIView):
         serializer = CustomUserSerializer
         return Response(serializer.data)
 
-# class ChangePasswordView(generics.UpdateAPIView):
+class ChangePasswordView(generics.UpdateAPIView):
 
-#     queryset = CustomUser.objects.all()
-#     permission_classes = (IsAuthenticated,)
-#     serializer_class = ChangePasswordSerializer
+    queryset = CustomUser.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ChangePasswordSerializer
 
 # class ChangePasswordView(generics.UpdateAPIView):
 #         model = CustomUser

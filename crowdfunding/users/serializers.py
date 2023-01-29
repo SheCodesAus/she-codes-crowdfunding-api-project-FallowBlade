@@ -1,5 +1,6 @@
 from rest_framework import serializers, validators
 from rest_framework.validators import ValidationError
+from django.contrib.auth.password_validation import validate_password
 from .models import CustomUser
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -28,32 +29,30 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 # Review later??
 # ?
-# class ChangePasswordSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CustomUser
-#         fields = ('old_password', 'password', 'password2')
-#     # password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-#     # password2 = serializers.CharField(write_only=True, required=True)
-#     # old_password = serializers.CharField(write_only=True, required=True)
+class ChangePasswordSerializer(serializers.Serializer):
 
-#     def validate(self, attrs):
-#         if attrs['password'] != attrs['password2']:
-#             raise serializers.ValidationError({"password": "Password fields didn't match."})
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password_repeat = serializers.CharField(write_only=True, required=True)
+    old_password = serializers.CharField(write_only=True, required=True)
 
-#         return attrs
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password_repeat']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
 
-#     def validate_old_password(self, value):
-#         user = self.context['request'].user
-#         if not user.check_password(value):
-#             raise serializers.ValidationError({"old_password": "Old password is not correct"})
-#         return value
+        return attrs
 
-#     def update(self, instance, validated_data):
+    def validate_old_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError({"old_password": "Old password is not correct"})
+        return value
 
-#         instance.set_password(validated_data['password'])
-#         instance.save()
+    def update(self, instance, validated_data):
 
-#         return instance
+        instance.set_password(validated_data['password'])
+        instance.save()
+
+        return instance
 
 # Review later???
 
