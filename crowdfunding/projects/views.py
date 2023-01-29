@@ -61,7 +61,7 @@ class ProjectList(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
+class ProjectDetail(APIView):
 
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, 
@@ -92,7 +92,7 @@ class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
         )
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     #  This DELETE Function Works - WOOP, do I need to add CASCADE is my question..?
@@ -108,13 +108,14 @@ class SearchAPIView(generics.ListCreateAPIView):
         search_fields = ['title', 'description',]
         filter_backends = (filters.SearchFilter,)
 
-    
 class PledgeList(generics.ListCreateAPIView):
     queryset = Pledge.objects.all()
     serializer_class = PledgeSerializer
 
     def perform_create(self, serializer):
         serializer.save(supporter=self.request.user)
+ 
+
 
     # def get_queryset(self):
     #     """

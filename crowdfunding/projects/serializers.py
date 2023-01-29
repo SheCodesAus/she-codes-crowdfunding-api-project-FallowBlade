@@ -16,10 +16,21 @@ from users.serializers import CustomUserSerializer
 #   ##This is the serializer for parsing model info about pledges from users & the required fields ####
 #NOTE I'm unsure how this is linked to an individual Project - ask later.
 class PledgeSerializer(serializers.ModelSerializer):
+   
+    supporter = serializers.SerializerMethodField()
     class Meta:
         model = Pledge
         fields = ['id', 'amount', 'comment', 'anonymous', 'project', 'supporter']
         read_only_fields = ['id', 'supporter']
+    
+    def get_supporter(self, obj):
+        if obj.anonymous: #i.e. if anonymous = true
+            return None
+        else:
+            return obj.supporter.username
+    
+    def create(self, validated_data):
+        return Pledge.objects.create(**validated_data)
         
 class PledgeDetailSerializer(serializers.ModelSerializer):
     class Meta:
