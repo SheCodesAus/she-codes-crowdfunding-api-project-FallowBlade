@@ -94,6 +94,29 @@ class ProjectDetail(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    # def create(self, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().create(validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance
+
+    # def update(self, instance, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().update(instance, validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance
     
     #  This DELETE Function Works - WOOP, do I need to add CASCADE is my question..?
     def delete(self,request,pk):
@@ -124,7 +147,7 @@ class PledgeList(generics.ListCreateAPIView):
     #     """
     #     user = self.request.user
     #     return Pledge.objects.filter(supporter=user)
-# class PledgeDetailView(generics.RetrieveUpdateAPIView)
+
 
 class PledgeDetailView(generics.RetrieveUpdateDestroyAPIView):
 
@@ -134,40 +157,5 @@ class PledgeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Pledge.objects.all()
     serializer_class = PledgeSerializer
 
-#   def get_object(self, pk):
-#         try:
-#             pledge = Pledge.objects.get(pk=pk)
-#             self.check_object_permissions(self.request, pledge)
-#             return pledge
-#         except Pledge.DoesNotExist:
-#             raise Http404
-    
-# def get(self, request, pk):
-#         pledge = self.get_object(pk)
-#         serializer = PledgeDetailView(pledge)
-#         return Response(serializer.data)
-    
-# def put(self, request, pk):
-#         pledge = self.get_object(pk)
-#         data = request.data
-#         serializer = PledgeSerializer(
-#             instance=pledge,
-#             data=data,
-#             partial=True
-#         )
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors)
-    
-#     #  This DELETE Function Works - WOOP, do I need to add CASCADE is my question..?
-# def delete(self,request,pk):
-#         pledge = self.get_object(pk)
-#         serializer = PledgeDetailView(pledge)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=204)
-    
 # pk=pk means the primary key is equal to the value given.  
 # we will re-use the def get_object code accross many places to save us doing it again.

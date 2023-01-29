@@ -71,9 +71,9 @@ class ProjectSerializer(serializers.Serializer):
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
 
-    # tags = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
-    # update_tags = serializers.ListField(
-    #     child=serializers.CharField(max_length=30), write_only=True)
+    tags = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
+    update_tags = serializers.ListField(
+        child=serializers.CharField(max_length=30), write_only=True)
     
     # def create(self, validated_data):
     #     tag_names = validated_data.pop('update_tags')

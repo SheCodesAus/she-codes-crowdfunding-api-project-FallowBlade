@@ -18,9 +18,14 @@ from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 from django.http import HttpResponseNotFound
 
-def Custom404(request, exception):
-    return HttpResponseNotFound("Error 404: Sorry we couldn't complete your request")
-handler404 = Custom404
+
+from django.http import JsonResponse
+def custom404(request, exception=None):
+    return JsonResponse({
+        'status_code': 404,
+        'error': 'Sorry! You did not water enough trees, try again'
+    })
+handler404 = custom404
 
 urlpatterns = [
     path('admin/', admin.site.urls),

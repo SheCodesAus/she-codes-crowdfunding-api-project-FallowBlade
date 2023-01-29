@@ -1,6 +1,6 @@
-# {{ my project title }}
-​
-{{ a paragraph detailing the purpose and target audience }}
+# Rejuvinature
+
+Crowdfunding project for community-conscious individuals looking to rejuvinate unloved public open greenspace.
 ​
 ## Features
 ​
@@ -34,43 +34,45 @@
 - Project
   - [X] Create
   - [X] Retrieve
-  - [ ] Update
-  - [ ] Destroy
+  - [X] Update
+  - [X] Destroy
+
 - Pledge
   - [X] Create
   - [X] Retrieve
-  - [ ] Update
-  - [ ] Destroy
+  - [X] Update
+  - [X] Destroy - I wanted to try and set this to be only the Project Owner could delete a pledge linked to a project, but ran into issues trying to get this to work :(
+
 - User
   - [X] Create
   - [X] Retrieve
-  - [ ] Update
-  - [ ] Destroy
+  - [X] Update
+  - [ ] Destroy - did not include as did not want user to be able to delete (would need to manage cascades/data retention and ran out of time to consider how to account for this).
 ​
 ### Implement suitable permissions
 ​
 **Note: Not all of these may be required for your project, if you have not included one of these please justify why.**
 ​
 - Project
-  - [ ] Limit who can create
-  - [ ] Limit who can retrieve
-  - [ ] Limit who can update
-  - [ ] Limit who can delete
+  - [X] Limit who can create - only users can create a project
+  - [ ] Limit who can retrieve - no necessary, as want everyone to be able to view the projects.
+  - [X] Limit who can update 
+  - [X] Limit who can delete 
 - Pledge
-  - [ ] Limit who can create
-  - [ ] Limit who can retrieve
-  - [ ] Limit who can update
-  - [ ] Limit who can delete
+  - [X] Limit who can create - implemented anonymous and non-anonymous create option
+  - [X] Limit who can retrieve - anyone can get the pledge lists
+  - [X] Limit who can update - only supporters can update
+  - [ ] Limit who can delete - wanted to limit this to project owners, but unable to figure out how to create. Currently delete for all users.
 - User
-  - [ ] Limit who can retrieve
-  - [ ] Limit who can update
-  - [ ] Limit who can delete
+  - [X] Limit who can retrieve
+  - [X] Limit who can update
+  - [] Limit who can delete - did not implement this. Unsure of data and security protocol for deletion of a users (i.e. what happens to their committed pledges, projects, etc.? Should I have them cascade, or should I set them to be full)
 ​
 ### Implement relevant status codes
 ​
-- [ ] Get returns 200
-- [ ] Create returns 201
-- [ ] Not found returns 404
+- [X] Get returns 200
+- [X] Create returns 201
+- [X] Not found returns 404
 ​
 ### Handle failed requests gracefully 
 ​
@@ -104,8 +106,8 @@ This feature sits within the ProjectList view. It allows us to filter projects b
 - [ ] A link to the deployed project.
 - [ ] A screenshot of Insomnia, demonstrating a successful GET method for any endpoint.
 - [ ] A screenshot of Insomnia, demonstrating a successful POST method for any endpoint.
-- [ ] A screenshot of Insomnia, demonstrating a token being returned.
-- [ ] Your refined API specification and Database Schema.
+- [ ] A screenshot of Insomnia, demonstrating a token being returned. see 
+- [ ] Your refined API specification and Database Schema. - Link here: 
 ​
 ### Step by step instructions for how to register a new user and create a new project (i.e. endpoints and body data).
 ​
