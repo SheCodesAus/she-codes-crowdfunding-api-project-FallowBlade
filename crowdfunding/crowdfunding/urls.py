@@ -23,7 +23,7 @@ from django.http import JsonResponse
 def custom404(request, exception=None):
     return JsonResponse({
         'status_code': 404,
-        'error': 'Sorry! You did not water enough trees, try again'
+        'error': 'Sorry! You need to look for the trees before the forest. Try again.'
     })
 handler404 = custom404
 

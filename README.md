@@ -94,7 +94,7 @@ This feature sits within the ProjectList view. It allows us to filter projects b
 ​
 - [X] Category Feature
 ​
-This feature creates project categories with a name, unique ID and slug(URL-friendly name convention for calling at later stage).
+This feature creates project categories with a name, unique ID and slug(URL-friendly name convention) to sit as distinct category option.
 
 - [X] Ben's Bonus Totals Feature
 ​
@@ -113,35 +113,37 @@ Not sure if this counts as a feature, but i've added a pagination rule where if 
 ## Part A Submission
 ​
 - [ ] A link to the deployed project. 
-- [ ] A screenshot of Insomnia, demonstrating a successful GET method for any endpoint.
+- [X] A screenshot of Insomnia, demonstrating a successful GET method for any endpoint.
 - [X] A screenshot of Insomnia, demonstrating a successful POST method for any endpoint.
 - [X] A screenshot of Insomnia, demonstrating a token being returned. see 
-- [ ] Your refined API specification and Database Schema. - Link here: 
-​
+- [X] Your refined API specification and Database Schema. 
+    - URL: https://1drv.ms/w/s!AlPOwdh879WhhGvVGXDgWLISvvi4?e=IHb9Zh
 ### Step by step instructions for how to register a new user and create a new project (i.e. endpoints and body data).
 ​
 1. Create User
 ​
 ```shell
-curl --request POST \
-  --url http://wild-glade-7116/users/ \
+    curl --request POST \
+  --url http://localhost:8000/users/ \
+  --header 'Authorization: Token e5c07ef41d1e9bef76c9896980e304b9693e50e1' \
   --header 'Content-Type: application/json' \
   --data '{
-	"username": <insertusername>
-	"email": <insertemail>
-	"password": <insertpassword>
-}
+	"username": "NewUser",
+	"email": "test@test.com",
+	"password": "NewUser"
+}'
+
 ```
 ​
 2. Sign in User
 ​
 ```shell
 curl --request POST \
-  --url http://127.0.0.1:8000/api-token-auth/ \
+  --url http://localhost:8000/api-token-auth/ \
   --header 'Content-Type: application/json' \
   --data '{
-	"username": "testuser",
-	"password": "not-my-password"
+	"username":"Jerry",
+	"password":"Jerry"
 }'
 ```
 ​
@@ -149,15 +151,15 @@ curl --request POST \
 ​
 ```shell
 curl --request POST \
-  --url http://127.0.0.1:8000/projects/ \
-  --header 'Authorization: Token 5b8c82ec35c8e8cb1fac24f8eb6d480a367f322a' \
+  --url http://localhost:8000/projects/ \
+  --header 'Authorization: Token e5c07ef41d1e9bef76c9896980e304b9693e50e1' \
   --header 'Content-Type: application/json' \
-  --data '{
-	"title": "Donate a cat",
-	"description": "Please help, we need a cat for she codes plus, our class lacks meows.",
-	"goal": 1,
-	"image": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Dollar_bill_and_small_change.jpg",
-	"is_open": true,
-	"date_created": "2023-01-28T05:53:46.113Z"
-}
-
+  --data '	{
+		"title": "Garden Pimp Out",
+		"description": "Please pimp our garden with quality plants",
+		"goal": 1000,
+		"image": "https://thewondrous.com/wp-content/uploads/2015/02/cute-funny-cats.jpg",
+		"is_open": true,
+		"date_created": "2023-01-24T10:25:50.901135Z",
+		"category": "native-garden-projects"
+	}'
