@@ -94,7 +94,7 @@ This feature sits within the ProjectList view. It allows us to filter projects b
 ​
 - [X] Category Feature
 ​
-This feature creates project categories with a name, unique ID and slug(URL-friendly name convention) to sit as distinct category option.
+This feature creates project categories with a name, unique ID and slug(URL-friendly name convention) to sit as distinct category option. This is so that you can group or associate projects by a category. To be honest, don't think it's working the way I intended. I wanted it to link to a project via a FK/PK assocation, but at the moment it's sitting as a field I need to write in against a project.. Hopefully you can see the spirit of the intention there though, if not the execution..
 
 - [X] Ben's Bonus Totals Feature
 ​
