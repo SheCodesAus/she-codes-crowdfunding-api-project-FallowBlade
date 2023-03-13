@@ -1,0 +1,76 @@
+
+
+This is the "App" directory
+
+
+includes:
+-models, views, etc.
+
+
+pledge.project 
+
+project.pledges.all (give you all the pledges = a list of pledges)
+for pledge in p.pledges
+    print (pledge.amount)
+
+p.pledges.create
+
+
+TASK: To add (get) all the pledges for one project to see if goal has been reached:
+
+import from django.db.models import sum avg, count, min, sum
+
+p= Project.object.annotate(total=Sum('pledges__amount')).first
+
+
+    # tags = serializers.SlugRelatedField(many=True, slug_field='name', read_only=True)
+    # update_tags = serializers.ListField(
+    #     child=serializers.CharField(max_length=30), write_only=True)
+
+
+    # def create(self, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().create(validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance
+
+    # def update(self, instance, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().update(instance, validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance
+
+
+    Serializer tag attempt:
+    
+    # def create(self, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().create(validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance
+
+    # def update(self, instance, validated_data):
+    #     tag_names = validated_data.pop('update_tags')
+    #     instance = super().update(instance, validated_data)
+    #     user = self.context['request'].user
+    #     tags = []
+    #     for name in tag_names:
+    #         tag, created = Tags.objects.get_or_create(name=name, defaults={'created_by': user})
+    #         tags.append(tag)
+    #     instance.tags.set(tags)
+    #     return instance

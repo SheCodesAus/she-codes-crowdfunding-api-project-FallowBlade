@@ -1,0 +1,57 @@
+Create a New User:
+
+curl --request POST \
+  --url http://localhost:8000/users/ \
+  --header 'Authorization: Token e5c07ef41d1e9bef76c9896980e304b9693e50e1' \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"username": "NewUser",
+	"email": "test@test.com",
+	"password": "NewUser"
+}
+
+Authenticate:
+curl --request POST \
+  --url http://localhost:8000/api-token-auth/ \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"username":"admin",
+	"password":"admin"
+}'
+
+Create a NEW Project:
+curl --request POST \
+  --url http://localhost:8000/projects/ \
+  --header 'Authorization: Token e5c07ef41d1e9bef76c9896980e304b9693e50e1' \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"title": "Greenify Cockburn Council",
+	"description": "Help us to create a beautiful streetscape in Cockburn",
+	"goal": 500,
+	"image": "https://thewondrous.com/wp-content/uploads/2015/02/cute-funny-cats.jpg",
+	"is_open": true,
+	"date_created": "2023-01-28T05:04:39.995Z"
+	
+}'
+
+Create a NEW pledge, aligned to the NEW Project:
+curl --request POST \
+  --url http://localhost:8000/pledges/ \
+  --header 'Authorization: Token e5c07ef41d1e9bef76c9896980e304b9693e50e1' \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"amount": 300,
+	"comment": "This is an amazing initiative, well done!",
+	"anonymous": false,
+	"project": 4
+}'
+
+Update a project:
+curl --request PUT \
+  --url http://localhost:8000/projects/1/ \
+  --header 'Authorization: Token e5c07ef41d1e9bef76c9896980e304b9693e50e1' \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"title": "Garden Gurus Needed!",
+	"description": "Help beautify the garden in local area Snowsville"
+}'
